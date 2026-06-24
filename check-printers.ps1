@@ -155,6 +155,39 @@ function Invoke-PlanePost {
     return $resultJson | ConvertFrom-Json
 }
 
+function Get-PlaneGet {
+    param([string]$Url, [string]$ApiKey)
+
+    $req = [System.Net.WebRequest]::Create($Url)
+    $req.Method = "GET"
+    $req.Headers.Add("X-API-Key", $ApiKey)
+    $resp = $req.GetResponse()
+    $reader = New-Object System.IO.StreamReader($resp.GetResponseStream(), [System.Text.Encoding]::UTF8)
+    $resultJson = $reader.ReadToEnd()
+    $reader.Close()
+    return $resultJson | ConvertFrom-Json
+}
+
+function Get-CurrentCycleId {
+    param([string]$BaseUrl, [string]$Ws, [string]$ProjId, [string]$ApiKey)
+
+    $today = Get-Date
+    $url = "$BaseUrl/api/v1/workspaces/$Ws/projects/$ProjId/cycles/"
+    $data = Get-PlaneGet -Url $url -ApiKey $ApiKey
+    foreach ($cycle in $data.results) {
+        if ($cycle.start_date -and $cycle.end_date) {
+            $start = [DateTime]$cycle.start_date
+            $end = [DateTime]$cycle.end_date
+            if ($today -ge $start -and $today -le $end) {
+                Write-Log "Auto-detected cycle: '$($cycle.name)' (ID: $($cycle.id))"
+                return $cycle.id
+            }
+        }
+    }
+    Write-Log "Warning: No active cycle found for today"
+    return $null
+}
+
 # --- MAIN ---
 Write-Log "Starting Printer Check..."
 
@@ -257,10 +290,11 @@ if ($cfg.plane.module_id) {
     }
 }
 
-# 4. Add to cycle
-if ($cfg.plane.cycle_id) {
-    $cycUrl = "$base/api/v1/workspaces/$ws/projects/$projId/cycles/$($cfg.plane.cycle_id)/cycle-issues/"
-    Write-Log "Adding to current cycle..."
+# 4. Add to cycle (auto-detect)
+$cycleId = Get-CurrentCycleId -BaseUrl $base -Ws $ws -ProjId $projId -ApiKey $key
+if ($cycleId) {
+    $cycUrl = "$base/api/v1/workspaces/$ws/projects/$projId/cycles/$cycleId/cycle-issues/"
+    Write-Log "Adding to cycle..."
     try {
         $cycJson = @{ issues = @($wiId) } | ConvertTo-Json
         Invoke-PlanePost -Url $cycUrl -ApiKey $key -JsonBody $cycJson | Out-Null

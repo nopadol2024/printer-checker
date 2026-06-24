@@ -5,7 +5,6 @@
     "workspace_slug": "sys9",
     "project_id": "your-project-uuid",
     "module_id": "your-module-uuid",
-    "cycle_id": "your-cycle-uuid",
     "state_todo": "a85e3008-c0fc-4a45-8997-7604c56bc746",
     "label_name": "printer",
     "label_color": "#FF6900"
