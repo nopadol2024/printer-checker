@@ -17,3 +17,12 @@ cannon_cashierstock9,192.168.0.241,printer
 epson_L1300_HR,192.168.1.252,printer
 epson_L3210_GR,10.0.3.97,printer
 epson_L3250_Stock9,10.0.3.5,printer
+printer_pickupzoneA-s01,192.168.1.129,printer
+printer_pickupzoneB-s01,192.168.0.104,printer
+printer_pickupzoneD-s01,192.168.0.103,printer
+POS01_Slip-D11,192.168.1.112,printer
+POS01_Slip-D12,192.168.1.110,printer
+POS01_Slip-D15,192.168.1.225,printer
+POS04_DTSlip-D13,192.168.0.60,printer
+POS05_S9Slip-D41,192.168.1.253,printer
+POS_S9OnlineSlip-P14,10.0.3.196,printer
