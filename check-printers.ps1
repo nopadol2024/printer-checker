@@ -98,59 +98,69 @@ function Get-OrCreateLabel {
 function Get-TypeIcon {
     param([string]$Type)
     $icons = @{
-        printer    = [char]0xD83D + [char]0xDDB6  # 🖶
-        cctv       = [char]0xD83D + [char]0xDCF7  # 📷
-        "access point" = [char]0xD83D + [char]0xDCE1  # 📡
-        "ip phone"  = [char]0x260E  # ☎
-        server     = [char]0xD83D + [char]0xDCC1  # 🗁
-        iot        = [char]0xD83D + [char]0xDCF6  # 📶
-        isp        = [char]0xD83C + [char]0xDF10  # 🌐
-        cloud      = [char]0x2601  # ☁
+        printer    = [char]0xD83D + [char]0xDDB6
+        cctv       = [char]0xD83D + [char]0xDCF7
+        "access point" = [char]0xD83D + [char]0xDCE1
+        "ip phone"  = [char]0x260E
+        server     = [char]0xD83D + [char]0xDCC1
+        iot        = [char]0xD83D + [char]0xDCF6
+        isp        = [char]0xD83C + [char]0xDF10
+        cloud      = [char]0x2601
     }
     if ($icons.ContainsKey($Type.ToLower())) { return $icons[$Type.ToLower()] }
     return [char]0x2753
 }
 
+function Get-BranchName {
+    param([string]$Code)
+    $names = @{ S01 = "Head Office"; S02 = "Home Expert"; S03 = "Stock9" }
+    if ($names.ContainsKey($Code.ToUpper())) { return $names[$Code.ToUpper()] }
+    return $Code
+}
+
 function ConvertTo-HtmlTable {
     param([array]$Results, [string]$DateStr, [string]$TimeStr)
 
-    $groups = $Results | Group-Object Type
+    $branchGroups = $Results | Group-Object Branch
 
     $sections = ""
-    foreach ($g in $groups) {
-        $icon = Get-TypeIcon -Type $g.Name
-        $sectionRows = ""
-        foreach ($r in $g.Group) {
-            $statusIcon = switch ($r.Status) {
-                "Online"    { '<div style="display:inline-flex;align-items:center;gap:6px;background:#ecfdf5;color:#059669;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">' + [char]0x2705 + ' Online</div>' }
-                "PortError" { '<div style="display:inline-flex;align-items:center;gap:6px;background:#fffbeb;color:#d97706;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">' + [char]0x26A0 + [char]0xFE0F + ' Port Error</div>' }
-                "Offline"   { '<div style="display:inline-flex;align-items:center;gap:6px;background:#fef2f2;color:#dc2626;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">' + [char]0x274C + ' Offline</div>' }
-                default     { '<div style="display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;color:#6b7280;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">Unknown</div>' }
-            }
-            $sectionRows += @"
+    foreach ($bg in $branchGroups) {
+        $branchName = Get-BranchName -Code $bg.Name
+        $sections += "<tr style=`"background:#e5e7eb`"><td colspan=`"3`" style=`"padding:10px 12px;border:1px solid #d1d5db;font-weight:800;font-size:15px`">[ $($bg.Name) ] $branchName ($($bg.Count))</td></tr>"
+
+        $typeGroups = $bg.Group | Group-Object Type
+        foreach ($tg in $typeGroups) {
+            $typeIcon = Get-TypeIcon -Type $tg.Name
+            $sections += "<tr style=`"background:#f3f4f6`"><td colspan=`"3`" style=`"padding:6px 12px 6px 28px;border:1px solid #e5e7eb;font-weight:600;font-size:13px`">$typeIcon $($tg.Name.ToUpper()) ($($tg.Count))</td></tr>"
+
+            foreach ($r in $tg.Group) {
+                $statusIcon = switch ($r.Status) {
+                    "Online"    { '<div style="display:inline-flex;align-items:center;gap:6px;background:#ecfdf5;color:#059669;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">' + [char]0x2705 + ' Online</div>' }
+                    "PortError" { '<div style="display:inline-flex;align-items:center;gap:6px;background:#fffbeb;color:#d97706;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">' + [char]0x26A0 + [char]0xFE0F + ' Port Error</div>' }
+                    "Offline"   { '<div style="display:inline-flex;align-items:center;gap:6px;background:#fef2f2;color:#dc2626;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">' + [char]0x274C + ' Offline</div>' }
+                    default     { '<div style="display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;color:#6b7280;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600">Unknown</div>' }
+                }
+                $sections += @"
 <tr>
-    <td style="padding:8px;border:1px solid #e5e7eb">$($r.Name)</td>
-    <td style="padding:8px;border:1px solid #e5e7eb"><code>$($r.IP)</code></td>
-    <td style="padding:8px;border:1px solid #e5e7eb">$statusIcon</td>
+    <td style="padding:6px 12px;border:1px solid #e5e7eb">$($r.Name)</td>
+    <td style="padding:6px 12px;border:1px solid #e5e7eb"><code>$($r.IP)</code></td>
+    <td style="padding:6px 12px;border:1px solid #e5e7eb">$statusIcon</td>
 </tr>
 "@
+            }
         }
-        $sections += @"
-<tr style="background:#f3f4f6"><td colspan="3" style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:700;font-size:14px">$icon $($g.Name.ToUpper()) ($($g.Count))</td></tr>
-$sectionRows
-"@
     }
 
     return @"
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:16px">
     <h2 style="margin-bottom:16px">Device Status Report - $DateStr</h2>
     <p style="color:#6b7280;margin-bottom:16px">Checked at: $TimeStr</p>
-    <table style="border-collapse:collapse;width:100%;max-width:700px;border:1px solid #e5e7eb">
+    <table style="border-collapse:collapse;width:100%;max-width:750px;border:1px solid #d1d5db">
         <thead>
             <tr style="background:#f9fafb">
-                <th style="padding:8px;border:1px solid #e5e7eb;text-align:left">Device Name</th>
-                <th style="padding:8px;border:1px solid #e5e7eb;text-align:left">IP Address</th>
-                <th style="padding:8px;border:1px solid #e5e7eb;text-align:left">Status</th>
+                <th style="padding:8px 12px;border:1px solid #d1d5db;text-align:left">Device Name</th>
+                <th style="padding:8px 12px;border:1px solid #d1d5db;text-align:left">IP Address</th>
+                <th style="padding:8px 12px;border:1px solid #d1d5db;text-align:left">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -237,6 +247,7 @@ foreach ($p in $printers) {
         Name   = $p.name
         IP     = $p.ip
         Type   = if ($p.type) { $p.type } else { "printer" }
+        Branch = if ($p.branch) { $p.branch.ToUpper() } else { "S01" }
         Status = $check.Status
         Ping   = $check.Ping
         Port   = $check.Port
@@ -254,6 +265,8 @@ Write-Log "--- Summary ---"
 Write-Log "  Online: $onlineCount/$total"
 if ($portErrorCount -gt 0) { Write-Log "  Port Error: $portErrorCount/$total" }
 if ($offlineCount -gt 0)  { Write-Log "  Offline: $offlineCount/$total" }
+$branchStats = $results | Group-Object Branch | ForEach-Object { "$($_.Name): $($_.Count)" }
+Write-Log "  By branch: $($branchStats -join ', ')"
 $typeStats = $results | Group-Object Type | ForEach-Object { "$($_.Name): $($_.Count)" }
 Write-Log "  By type: $($typeStats -join ', ')"
 
