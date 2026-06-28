@@ -26,3 +26,16 @@ POS01_Slip-D15,192.168.1.225,printer,S01
 POS04_DTSlip-D13,192.168.0.60,printer,S01
 POS05_S9Slip-D41,192.168.1.253,printer,S01
 POS_S9OnlineSlip-P14,10.0.3.196,printer,S01
+nebula,192.168.0.7,server,S01
+mars,192.168.0.186,server,S01
+s1r,192.168.0.51,server,S01
+sun,192.168.0.174,server,S01
+olaf,192.168.0.33,server,S01
+EXS1,192.168.0.1,server,S01
+pve1,192.168.0.12,server,S01
+pve2,192.168.0.204,server,S01
+Qserver,192.168.0.89,server,S01
+newappservice,192.168.0.196,server,S01
+venus,192.168.0.70,server,S01
+prtgserver,192.168.0.80,server,S01
+report,192.168.0.169,server,S01
