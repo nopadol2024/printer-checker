@@ -27,24 +27,10 @@ function Test-PrinterPort {
         $pingOk = $false
     }
 
-    if (-not $pingOk) {
+    if ($pingOk) {
+        return @{ Status = "Online"; Ping = $true; Port = $false }
+    } else {
         return @{ Status = "Offline"; Ping = $false; Port = $false }
-    }
-
-    try {
-        $tcp = New-Object System.Net.Sockets.TcpClient
-        $connect = $tcp.BeginConnect($IP, $Port, $null, $null)
-        $wait = $connect.AsyncWaitHandle.WaitOne($TimeoutMs, $false)
-        if ($wait -and $tcp.Connected) {
-            $tcp.EndConnect($connect) | Out-Null
-            $tcp.Close()
-            return @{ Status = "Online"; Ping = $true; Port = $true }
-        } else {
-            $tcp.Close()
-            return @{ Status = "PortError"; Ping = $true; Port = $false }
-        }
-    } catch {
-        return @{ Status = "PortError"; Ping = $true; Port = $false }
     }
 }
 
