@@ -39,3 +39,13 @@ newappservice,192.168.0.196,server,S01
 venus,192.168.0.70,server,S01
 prtgserver,192.168.0.80,server,S01
 report,192.168.0.169,server,S01
+pve3,192.168.0.17,server,S01
+vdopay9,192.168.0.245,server,S01
+garage,192.168.1.61,server,S01
+grandstream,192.168.0.201,server,S01
+GSM_gateway,192.168.0.199,server,S01
+PSTN_gateway,192.168.0.200,server,S01
+nas,192.168.0.155,server,S01
+mikrotik,192.168.99.2,server,S01
+sophos,192.168.0.254,server,S01
+Zyxel_mainswitch,192.168.1.99,server,S01
