@@ -99,7 +99,7 @@ function Get-TypeIcon {
 
 function Get-BranchName {
     param([string]$Code)
-    $names = @{ S01 = "Head Office"; S02 = "Home Expert"; S03 = "Stock9" }
+    $names = @{ S01 = "Head Office"; S02 = "Home Expert"; S03 = "Stock9"; CLOUD = "Cloud Services" }
     if ($names.ContainsKey($Code.ToUpper())) { return $names[$Code.ToUpper()] }
     return $Code
 }

@@ -49,3 +49,4 @@ nas,192.168.0.155,server,S01
 mikrotik,192.168.99.2,server,S01
 sophos,192.168.0.254,server,S01
 Zyxel_mainswitch,192.168.1.99,server,S01
+Erp,erp.nopadol.com,cloud,CLOUD
