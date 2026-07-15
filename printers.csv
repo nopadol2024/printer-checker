@@ -75,3 +75,5 @@ AP_backoffice,10.0.2.14,Access Points,S01
 AP_stock9-2,10.0.2.18,Access Points,S01
 AP_gr,10.0.2.15,Access Points,S01
 AP_stock9,10.0.2.17,Access Points,S01
+switch_wifiPOE,10.0.2.209,server,S01
+AP_DTCap300,192.168.0.250,Access Points,S01
