@@ -92,6 +92,7 @@ function Get-TypeIcon {
         iot        = [char]0xD83D + [char]0xDCF6
         isp        = [char]0xD83C + [char]0xDF10
         cloud      = [char]0x2601
+        wan        = [char]0xD83C + [char]0xDF10
     }
     if ($icons.ContainsKey($Type.ToLower())) { return $icons[$Type.ToLower()] }
     return [char]0x2753

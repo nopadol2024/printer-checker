@@ -59,3 +59,13 @@ Stock9,stock-api.sys9.co,cloud,CLOUD
 Merchant,m.sys9.co,cloud,CLOUD
 Jenkins,jenkins.sys9.co,cloud,CLOUD
 emitter-web,35.247.133.187,cloud,CLOUD
+book,book.nopadol.com,server,S01
+km,km.nopadol.com,server,S01
+grafana,bi.nopadol.com,server,S01
+plane,plane.sys9.co,server,S01
+bifrost,bifrost.sys9.co,server,S01
+home,admin-ha.nopadol.com,server,S01
+gittea,git.sys9.co,server,S01
+bivat,192.168.0.194,server,S01
+3BB,180.183.249.65,wan,S01
+AIS,faham-ais.nopadol.net,wan,S01
