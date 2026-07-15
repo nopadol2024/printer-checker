@@ -87,6 +87,7 @@ function Get-TypeIcon {
         printer    = [char]0xD83D + [char]0xDDB6
         cctv       = [char]0xD83D + [char]0xDCF7
         "access point" = [char]0xD83D + [char]0xDCE1
+        "access points" = [char]0xD83D + [char]0xDCE1
         "ip phone"  = [char]0x260E
         server     = [char]0xD83D + [char]0xDCC1
         iot        = [char]0xD83D + [char]0xDCF6

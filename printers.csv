@@ -69,3 +69,9 @@ gittea,git.sys9.co,server,S01
 bivat,192.168.0.194,server,S01
 3BB,180.183.249.65,wan,S01
 AIS,faham-ais.nopadol.net,wan,S01
+AP_it,10.0.2.11,Access Points,S01
+AP_MD-F3,10.0.2.12,Access Points,S01
+AP_backoffice,10.0.2.14,Access Points,S01
+AP_stock9-2,10.0.2.18,Access Points,S01
+AP_gr,10.0.2.15,Access Points,S01
+AP_stock9,10.0.2.17,Access Points,S01
