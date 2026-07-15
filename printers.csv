@@ -35,7 +35,6 @@ EXS1,192.168.0.1,server,S01
 pve1,192.168.0.12,server,S01
 pve2,192.168.0.204,server,S01
 Qserver,192.168.0.89,server,S01
-newappservice,192.168.0.196,server,S01
 venus,192.168.0.70,server,S01
 prtgserver,192.168.0.80,server,S01
 report,192.168.0.169,server,S01
